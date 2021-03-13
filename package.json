@@ -1,6 +1,6 @@
 {
   "name": "@postalcode/service-viacep",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Plugin for postalcode",
   "main": "dist/index.js",
   "module": "dist/index.js",
