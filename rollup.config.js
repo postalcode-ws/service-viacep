@@ -1,7 +1,7 @@
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
 import dts from "rollup-plugin-dts";
-import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
 
@@ -61,6 +61,7 @@ export default [
       }),
       replace({
         "node-fetch": "unfetch",
+        preventAssignment: true,
       }),
       commonjs({
         exclude: "node_modules",
