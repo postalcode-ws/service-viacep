@@ -63,7 +63,7 @@ export default [
       resolve({
         browser: true,
       }),
-      uglify(),
+      uglify({}),
     ],
     context: "window",
     output: [
@@ -75,6 +75,7 @@ export default [
         globals: {
           unfetch: "fetch",
         },
+        exports: 'named'
       },
     ],
     external: Object.keys(globals),

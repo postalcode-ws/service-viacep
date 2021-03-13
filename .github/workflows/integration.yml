@@ -1,11 +1,12 @@
-name: Integration
+name: CI
 
 on:
   push:
     branches:
       - master
   pull_request:
-    branches: -master
+    branches:
+      - master
 
 jobs:
   publish:
@@ -22,3 +23,8 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm install
       - run: npm test
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
