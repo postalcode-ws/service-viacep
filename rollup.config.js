@@ -1,9 +1,9 @@
-import commonjs from "rollup-plugin-commonjs";
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
 import dts from "rollup-plugin-dts";
-import resolve from "rollup-plugin-node-resolve";
 import replace from "rollup-plugin-replace";
+import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
-import { uglify } from "rollup-plugin-uglify";
 
 // this override is needed because Module format cjs does not support top-level await
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -30,7 +30,6 @@ export default [
         exclude: "node_modules",
         ignoreGlobal: true,
       }),
-      uglify(),
     ],
     output: [
       {
@@ -39,6 +38,13 @@ export default [
         sourcemap: true,
         name: "viacep",
         exports: "named",
+      },
+      {
+        file: packageJson.main.replace(".js", ".min.js"),
+        format: "cjs",
+        exports: "named",
+        sourcemap: true,
+        plugins: [terser()],
       },
     ],
     external: Object.keys(globals),
@@ -63,7 +69,6 @@ export default [
       resolve({
         browser: true,
       }),
-      uglify({}),
     ],
     context: "window",
     output: [
@@ -71,11 +76,22 @@ export default [
         file: packageJson.browser,
         format: "umd", // commonJS
         sourcemap: true,
-        name: "cep",
+        name: "viacep",
         globals: {
           unfetch: "fetch",
         },
-        exports: 'named'
+        exports: "named",
+      },
+      {
+        file: packageJson.browser.replace(".js", ".min.js"),
+        format: "umd", // commonJS
+        name: "viacep",
+        sourcemap: true,
+        globals: {
+          unfetch: "fetch",
+        },
+        exports: "named",
+        plugins: [terser()],
       },
     ],
     external: Object.keys(globals),

@@ -12,6 +12,7 @@ README.md
 tsconfig.json
 example
 .babelrc
-.nyrc.json
+.nyrc
 .nyc_output
 .vscode
+yarn.lock
