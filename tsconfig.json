@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node", "mocha", "chai"],
+    "noImplicitAny": true,
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules"]
+}
