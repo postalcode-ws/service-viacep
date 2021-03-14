@@ -25,7 +25,7 @@ export interface ServiceOptions {
   fetchinit?: RequestInit;
 }
 
-export class ViaCepService implements ServiceModule<ServiceOptions> {
+export class Service implements ServiceModule<ServiceOptions> {
   private options: ServiceOptions | undefined;
   private postalCodeOptions: InitOptions | undefined;
   name: string;
@@ -133,4 +133,4 @@ export class ViaCepService implements ServiceModule<ServiceOptions> {
   };
 }
 
-export default ViaCepService;
+export default Service;

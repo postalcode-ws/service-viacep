@@ -5,6 +5,7 @@ export interface ServiceErrorInput {
 export class ServiceError extends Error {
   public service: string;
   constructor({ message, service }: ServiceErrorInput) {
+    /* istanbul ignore else */
     super();
 
     // Set the prototype explicitly.

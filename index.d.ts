@@ -35,7 +35,7 @@ interface ServiceOptions {
     url: string;
     fetchinit?: RequestInit;
 }
-declare class ViaCepService implements ServiceModule<ServiceOptions> {
+declare class Service implements ServiceModule<ServiceOptions> {
     private options;
     private postalCodeOptions;
     name: string;
@@ -55,5 +55,5 @@ declare class ViaCepService implements ServiceModule<ServiceOptions> {
     private throwApplicationError;
 }
 
-export default ViaCepService;
-export { InitOptions, Module, ServiceModule, ServiceOptions, ViaCepService };
+export default Service;
+export { InitOptions, Module, Service, ServiceModule, ServiceOptions };
