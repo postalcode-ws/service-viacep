@@ -21,7 +21,7 @@ export interface ServiceModule<TOptions = object> extends Module {
 
 //Daqui para baixo faz parte do modulo.
 export interface ServiceOptions {
-  url: string;
+  url?: string;
   fetchinit?: RequestInit;
 }
 
@@ -62,8 +62,8 @@ export class Service implements ServiceModule<ServiceOptions> {
   }
 
   init(
-    options: ServiceOptions | undefined,
-    postalCodeOptions: InitOptions | undefined
+    options?: ServiceOptions | undefined,
+    postalCodeOptions?: InitOptions | undefined
   ): void {
     this.options = defaults<ServiceOptions>(
       this.getDefaultsOptions(),
@@ -75,7 +75,15 @@ export class Service implements ServiceModule<ServiceOptions> {
   public async get(
     postalCodeClean: string
   ): Promise<POSTALCODE | ServiceError> {
-    return await fetch(this.options!.url.replace("[>CODE<]", postalCodeClean), {
+    let url: string;
+
+    if (this.options!.url) {
+      url = this.options?.url.replace("[>CODE<]", postalCodeClean) as string;
+    } else {
+      throw new Error("invalid Url");
+    }
+
+    return await fetch(url, {
       ...this.options!.fetchinit,
       ...this.postalCodeOptions,
     })
