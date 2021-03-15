@@ -1,10 +1,10 @@
+import { POSTALCODE } from "@postalcode/postalcode";
 import { expect, use } from "chai";
 import * as chaiSubset from "chai-subset";
 import * as nock from "nock";
 import { join } from "path";
 import ViaCepService from "../src";
 import ServiceError from "../src/errors/ServiceError";
-import { POSTALCODE } from "../src/interfaces";
 use(chaiSubset);
 
 describe(`Tests for ViaCepService ${new Date().getTime()}`, () => {
@@ -14,6 +14,7 @@ describe(`Tests for ViaCepService ${new Date().getTime()}`, () => {
     nock.disableNetConnect();
     ViaCep = new ViaCepService();
   });
+
   describe("when imported", () => {
     it("should return a Function", () => {
       expect(ViaCepService).to.be.a("Function");
@@ -24,6 +25,20 @@ describe(`Tests for ViaCepService ${new Date().getTime()}`, () => {
     it("should return a Promise", () => {
       expect(ViaCep.get("05010000").then).to.be.a("function");
       expect(ViaCep.get("05010000").catch).to.be.a("function");
+    });
+
+    it("should return error handler for invalid config Url", async () => {
+      const ViaCepInvalid = new ViaCepService();
+      await ViaCepInvalid.init({ url: "" })
+        .get("05010000")
+        .catch((error: Error) => {
+          expect(error).to.be.an.instanceOf(Error);
+          expect(error).to.be.containSubset({
+            name: "ServiceError",
+            message: `Invalid url for service ${ViaCep.name}.`,
+            service: ViaCep.name,
+          });
+        });
     });
 
     it("should return a Module functions", () => {
@@ -64,16 +79,14 @@ describe(`Tests for ViaCepService ${new Date().getTime()}`, () => {
         .get("/ws/99999999/json")
         .replyWithFile(200, join(__dirname, "/fixtures/error.json"));
 
-      await ViaCep.get("99999999")
-        .then(console.log)
-        .catch((error: ServiceError) => {
-          expect(error).to.be.an.instanceof(ServiceError);
-          expect(error).to.be.containSubset({
-            name: "ServiceError",
-            message: `Zip code not found on ${ViaCep.name} base.`,
-            service: ViaCep.name,
-          } as ServiceError);
-        });
+      await ViaCep.get("99999999").catch((error: ServiceError) => {
+        expect(error).to.be.an.instanceof(ServiceError);
+        expect(error).to.be.containSubset({
+          name: "ServiceError",
+          message: `Zip code not found on ${ViaCep.name} base.`,
+          service: ViaCep.name,
+        } as ServiceError);
+      });
     });
   });
 

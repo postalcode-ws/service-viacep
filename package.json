@@ -1,6 +1,6 @@
 {
   "name": "@postalcode/service-viacep",
-  "version": "0.1.5",
+  "version": "1.0.1",
   "description": "Plugin for postalcode",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -9,6 +9,7 @@
     "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
     "build": "rollup -c",
     "test": "mocha --config .mocharc.json",
+    "test:watch": "npm run test --watch",
     "coverage": "nyc --reporter=lcov npm test"
   },
   "browser": "dist/index-browser.js",
@@ -33,6 +34,7 @@
   ],
   "homepage": "https://postalcode.ws",
   "devDependencies": {
+    "@postalcode/postalcode": "^0.1.1",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@rollup/plugin-replace": "^2.4.1",

@@ -1,31 +1,20 @@
+import {
+  InitOptions,
+  POSTALCODE,
+  ServiceError as IServiceError,
+  ServiceModule,
+} from "@postalcode/postalcode";
 import fetch, { RequestInit, Response } from "node-fetch";
-import { ServiceError } from "./errors/ServiceError";
-import { POSTALCODE, ServiceResponse } from "./interfaces";
+import ServiceError from "./errors/ServiceError";
+import { ServiceResponse } from "./interfaces";
 import { defaults } from "./utils";
 
-export interface InitOptions {
-  timeOut: number;
-}
-
-export interface Module {
-  type: "Service";
-  name: string;
-  country: string;
-  codeLength: number;
-}
-
-export interface ServiceModule<TOptions = object> extends Module {
-  init(serviceOptions: TOptions, postalCodeOptions: InitOptions): void;
-  get(postalCodeClean: string): Promise<POSTALCODE | ServiceError>;
-}
-
-//Daqui para baixo faz parte do modulo.
 export interface ServiceOptions {
   url?: string;
   fetchinit?: RequestInit;
 }
 
-export class Service implements ServiceModule<ServiceOptions> {
+export class Service implements ServiceModule {
   private options: ServiceOptions | undefined;
   private postalCodeOptions: InitOptions | undefined;
   name: string;
@@ -33,21 +22,15 @@ export class Service implements ServiceModule<ServiceOptions> {
   country: string;
   codeLength: number;
 
-  constructor({
-    options,
-    postalCodeOptions,
-  }: {
-    options?: ServiceOptions;
-    postalCodeOptions?: InitOptions;
-  } = {}) {
+  constructor(options?: ServiceOptions) {
     this.name = "ViaCep";
     this.country = "Brasil";
     this.type = "Service";
     this.codeLength = 8;
-    this.init(options, postalCodeOptions);
+    this.init(options);
   }
 
-  getDefaultsOptions(): ServiceOptions {
+  private getDefaultsOptions(): ServiceOptions {
     return {
       url: `https://viacep.com.br/ws/[>CODE<]/json`,
       fetchinit: {
@@ -61,26 +44,26 @@ export class Service implements ServiceModule<ServiceOptions> {
     };
   }
 
-  init(
-    options?: ServiceOptions | undefined,
-    postalCodeOptions?: InitOptions | undefined
-  ): void {
+  init(options?: ServiceOptions, postalCodeOptions?: InitOptions): this {
     this.options = defaults<ServiceOptions>(
       this.getDefaultsOptions(),
       options || {}
     );
     this.postalCodeOptions = postalCodeOptions;
+    return this;
   }
 
   public async get(
     postalCodeClean: string
-  ): Promise<POSTALCODE | ServiceError> {
+  ): Promise<POSTALCODE | IServiceError> {
     let url: string;
 
     if (this.options!.url) {
-      url = this.options?.url.replace("[>CODE<]", postalCodeClean) as string;
+      url = this.options!.url.replace("[>CODE<]", postalCodeClean) as string;
     } else {
-      throw new Error("invalid Url");
+      return this.throwApplicationError(
+        new Error(`Invalid url for service ${this.name}.`)
+      );
     }
 
     return await fetch(url, {
@@ -127,7 +110,7 @@ export class Service implements ServiceModule<ServiceOptions> {
     };
   };
 
-  private throwApplicationError = (error: Error): Promise<ServiceError> => {
+  private throwApplicationError = (error: Error): Promise<IServiceError> => {
     const serviceError = new ServiceError({
       message: error.message,
       service: this.name,
