@@ -12,7 +12,7 @@
 
 # service-viacep
 
-Plugin service for postalcode-ws
+Plugin service for postalcode
 
 ```js
 import ViaCepService from "@postalcode/service-viacep";
@@ -21,7 +21,7 @@ const viaCep = new ViaCepService();
 viaCep.get("05010000").then(console.log);
 
 // {
-//   "cep":  "05010000",
+//   "postalcode":  "05010000",
 //   "state":  "SP",
 //   "city":  "São Paulo",
 //   "street":  "Rua Caiubí",
@@ -63,7 +63,31 @@ viaCep.codeLength;
 viaCep.get("05010000").then(console.log);
 
 // {
-//   "cep":  "05010000",
+//   "postalcode":  "05010000",
+//   "state":  "SP",
+//   "city":  "São Paulo",
+//   "street":  "Rua Caiubí",
+//   "neighborhood":  "Perdizes",
+// }
+```
+
+#### Plugin for PostalCode
+
+```ts
+import { PostalCode } from "@postalcode/postalcode";
+import ViaCepService, { ServiceOptions } from "@postalcode/service-viacep";
+
+const postalCode = new PostalCode({
+  /* All Postal Code Options*/
+});
+postCode.use<ServiceOptions>(ViaCepService, {
+  /* All Service Options*/
+});
+
+viaCep.get("05010000").then(console.log);
+
+// {
+//   "postalcode":  "05010000",
 //   "state":  "SP",
 //   "city":  "São Paulo",
 //   "street":  "Rua Caiubí",
@@ -77,4 +101,4 @@ Read our contribution guide [here](CONTRIBUTING.md)
 
 ## contributors
 
-[<img src="https://avatars1.githubusercontent.com/u/11856399?v=3&s=115" width="115"><br><sub>@weltongbi</sub>](https://github.com/lucianopf)
+[<img src="https://avatars1.githubusercontent.com/u/11856399?v=3&s=115" width="115"><br><sub>@weltongbi</sub>](https://github.com/weltongbi)

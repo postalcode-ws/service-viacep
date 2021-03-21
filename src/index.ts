@@ -101,7 +101,7 @@ export class Service implements ServiceModule {
     object: ServiceResponse
   ): POSTALCODE => {
     return {
-      cep: object.cep!.replace("-", ""),
+      postalcode: object.cep!.replace("-", ""),
       state: object.uf,
       city: object.localidade,
       neighborhood: object.bairro,

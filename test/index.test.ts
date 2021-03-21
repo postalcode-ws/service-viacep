@@ -62,7 +62,7 @@ describe(`Tests for ViaCepService ${new Date().getTime()}`, () => {
 
       await ViaCep.get("05010000").then((Cep) => {
         expect(Cep).to.deep.equal({
-          cep: "05010000",
+          postalcode: "05010000",
           state: "SP",
           city: "São Paulo",
           neighborhood: "Perdizes",
