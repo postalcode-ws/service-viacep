@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    //"forceConsistentCasingInFileNames": true,
     "types": ["node", "mocha", "chai"],
     "noImplicitAny": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": ["esnext", "dom"],
     "moduleResolution": "Node",
     "resolveJsonModule": true
   },

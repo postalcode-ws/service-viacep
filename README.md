@@ -33,8 +33,24 @@ viaCep.get("05010000").then(console.log);
 
 #### Browser using CDN
 
-```
-<script src="https://unpkg.com/@postalcode/service-viacep@0.1.3/dist/index-browser.min.js"></script>
+```html
+<script src="https://unpkg.com/@postalcode/service-viacep@latest/dist/index.min.js"></script>
+
+<script>
+  const viaCep = new serviceViacep({
+    /* Service configs*/
+  });
+
+  viaCep.get("05010000").then(console.log);
+
+  // {
+  //   "postalcode":  "05010000",
+  //   "state":  "SP",
+  //   "city":  "São Paulo",
+  //   "street":  "Rua Caiubí",
+  //   "neighborhood":  "Perdizes",
+  // }
+</script>
 ```
 
 #### npm
@@ -52,9 +68,9 @@ $ yarn add @postalcode/service-viacep
 #### Typescript
 
 ```ts
-import { ViaCepService } from "@postalcode/service-viacep";
+import serviceViacep from "@postalcode/service-viacep";
 
-const viaCep = new ViaCepService();
+const viaCep = new serviceViacep();
 viaCep.name;
 viaCep.type;
 viaCep.country;
@@ -74,13 +90,14 @@ viaCep.get("05010000").then(console.log);
 #### Plugin for PostalCode
 
 ```ts
-import { PostalCode } from "@postalcode/postalcode";
-import ViaCepService, { ServiceOptions } from "@postalcode/service-viacep";
+import PostalCode from "@postalcode/postalcode";
+import serviceViacep, { ServiceOptions } from "@postalcode/service-viacep";
 
 const postalCode = new PostalCode({
   /* All Postal Code Options*/
 });
-postCode.use<ServiceOptions>(ViaCepService, {
+
+postCode.use<ServiceOptions>(serviceViacep, {
   /* All Service Options*/
 });
 
