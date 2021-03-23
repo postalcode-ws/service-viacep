@@ -4,7 +4,7 @@ import {
   ServiceError as IServiceError,
   ServiceModule,
 } from "@postalcode/postalcode";
-import fetch from "cross-fetch";
+import fetch, { RequestInit, Response } from "node-fetch";
 import ServiceError from "./errors/ServiceError";
 import { ServiceResponse } from "./interfaces";
 import { defaults } from "./utils";
@@ -14,7 +14,7 @@ export interface ServiceOptions {
   fetchinit?: RequestInit;
 }
 
-class Service implements ServiceModule {
+export class Service implements ServiceModule {
   private options: ServiceOptions | undefined;
   private postalCodeOptions: InitOptions | undefined;
   name: string;
@@ -30,7 +30,7 @@ class Service implements ServiceModule {
     this.init(options);
   }
 
-  private getDefaultsOptions = (): ServiceOptions => {
+  private getDefaultsOptions(): ServiceOptions {
     return {
       url: `https://viacep.com.br/ws/[>CODE<]/json`,
       fetchinit: {
@@ -42,23 +42,20 @@ class Service implements ServiceModule {
         timeout: 30000,
       } as RequestInit,
     };
-  };
+  }
 
-  public init = (
-    options?: ServiceOptions,
-    postalCodeOptions?: InitOptions
-  ): this => {
+  init(options?: ServiceOptions, postalCodeOptions?: InitOptions): this {
     this.options = defaults<ServiceOptions>(
       this.getDefaultsOptions(),
       options || {}
     );
     this.postalCodeOptions = postalCodeOptions;
     return this;
-  };
+  }
 
-  public get = async (
+  public async get(
     postalCodeClean: string
-  ): Promise<POSTALCODE | IServiceError> => {
+  ): Promise<POSTALCODE | IServiceError> {
     let url: string;
 
     if (this.options!.url) {
@@ -77,7 +74,7 @@ class Service implements ServiceModule {
       .then(this.checkForError)
       .then(this.extractCepValuesFromResponse)
       .catch(this.throwApplicationError);
-  };
+  }
 
   private analyzeAndParseResponse = async (
     response: Response
