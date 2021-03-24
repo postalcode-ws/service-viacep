@@ -1,6 +1,5 @@
 .*
 test
-dist
 .gitignore
 .editorconfig
 .travis.yml
@@ -14,3 +13,5 @@ example
 .vscode
 yarn.lock
 rollup.config.js
+# Output of 'npm pack'
+*.tgz
