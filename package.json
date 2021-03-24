@@ -1,6 +1,6 @@
 {
   "name": "@postalcode/service-viacep",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Plugin for postalcode",
   "source": "./src/index.ts",
   "main": "./dist/index.js",
@@ -38,10 +38,10 @@
   ],
   "homepage": "https://postalcode.ws",
   "peerDependencies": {
-    "@postalcode/postalcode": "1.0.3"
+    "@postalcode/postalcode": "^1.1.0"
   },
   "devDependencies": {
-    "@postalcode/postalcode": "^1.0.3",
+    "@postalcode/postalcode": "^1.1.0",
     "@types/chai": "^4.2.15",
     "@types/chai-subset": "^1.3.3",
     "@types/mocha": "^8.2.1",
